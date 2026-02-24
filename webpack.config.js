@@ -1,7 +1,8 @@
 const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  mode: "development",
+  mode: process.env.NODE_ENV === "production" ? "production" : "development",
 
   entry: "./src/index.js",
 
@@ -9,7 +10,15 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
     clean: true,
+    publicPath: "/", // Vercel/static uchun yaxshi
   },
+
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./public/index.html",
+      // favicon: "./public/favicon.ico", // bo'lsa
+    }),
+  ],
 
   module: {
     rules: [
@@ -45,5 +54,6 @@ module.exports = {
     port: 3000,
     open: true,
     hot: true,
+    historyApiFallback: true,
   },
 };
